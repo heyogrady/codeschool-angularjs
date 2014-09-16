@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="store">
+<html lang="en" ng-app="goals">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Patrick AngularJS Template</title>
+    <title>Goals</title>
 
     <!-- Bootstrap -->
     <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -18,64 +18,122 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body ng-controller="StoreController as store">
-    <div class="row">
-      <div class="col-sm-6 col-sm-offset-3">
-        <div class="list-group">
-          <div class="list-group-item" ng-repeat="product in store.products">
-            <h1> {{product.name}} </h1>
-            <h2> ${{product.price}} </h2>
-            <button ng-show="product.canPurchase" class="btn btn-default"> Add to Cart </button>
-            <section ng-controller="PanelController as panel">
-              <ul class="nav nav-pills">
-                <li ng-class="{ active: panel.isSelected(1) }">
-                  <a href ng-click="panel.selectTab(1)">Description</a>
-                </li>
-                <li ng-class="{ active: panel.isSelected(2) }">
-                  <a href ng-click="panel.selectTab(2)">Specifications</a>
-                </li>
-                <li ng-class="{ active: panel.isSelected(3) }">
-                  <a href ng-click="panel.selectTab(3)">Reviews</a>
-                </li>
-              </ul><!-- /.nav nav-pills -->
-              <div class="panel" ng-show="panel.isSelected(1)">
-                <h4>Description</h4>
-                <p> {{product.description}} </p>
-              </div><!-- /.panel -->
-              <div class="panel" ng-show="panel.isSelected(2)">
-                <h4>Specifications</h4>
-                <blockquote>None yet</blockquote>
-              </div><!-- /.panel -->
-              <div class="panel" ng-show="panel.isSelected(3)">
-                <h4>Reviews</h4>
-                <blockquote ng-repeat="review in product.reviews">
-                  <b>{{review.stars}}</b>
-                  {{review.body}}
-                  <cite>by: {{review.author}}</cite>
-                </blockquote>
-                <form name="reviewForm">
-                  <select>
-                    <option value="1">1 star</option>
-                    <option value="2">2 stars</option>
-                    <option value="3">3 stars</option>
-                    <option value="4">4 stars</option>
-                    <option value="5">5 stars</option>
-                  </select>
-                  <textarea></textarea>
-                  <label>by:</label>
-                  <input type="email" />
-                  <input type="submit" value="Submit" />
-                </form>
-              </div><!-- /.panel -->
-            </section>
-          </div>
-        </div><!-- /.list-group -->
-      </div><!-- /.col-sm-6 -->
-    </div><!-- /.row -->
+  <body ng-controller="GoalsController">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-4">
+          <h1>Goals</h1>
+          <form role="form">
+            <div class="form-group">
+              <label for="overallGoal">How much money do you want to make?</label>
+              <input ng-model="agentGoals.overallGoal" ui-money-mask="0" type="text" class="form-control" id="overallGoal" placeholder="Enter goal">
+            </div><!-- /.form-group -->
+            <div class="form-group">
+              <label for="expenses">What are your business expenses?</label>
+              <input ng-model="agentGoals.expenses" ui-money-mask="0" type="text" class="form-control" id="expenses" placeholder="Enter expenses">
+            </div><!-- /.form-group -->
+            <div class="form-group">
+              <label for="agentSplit">What's your side of the agent/broker split?</label>
+              <input ng-model="agentGoals.agentSplit" ui-percentage-mask="0" min="0" max="100" type="text" class="form-control" id="agentSplit" placeholder="Enter split">
+            </div><!-- /.form-group -->
+            <div>
+              <h3>Gross Commission Needed:</h3>
+              <h4>{{ setGrossCommission() | currency }}</h4>
+            </div>
             
-
-    
-    
+            <div class="form-group">
+              <label for="avgCommissionRate">Your average commission rate?</label>
+              <input ng-model="agentGoals.avgCommissionRate" ui-percentage-mask="2" min="0" max="100" type="text" class="form-control" id="avgCommissionRate" placeholder="Enter rate (ex. 3.0)">
+            </div><!-- /.form-group -->
+            <h3>Sales Volume Needed:</h3>
+            <h4>{{ setSalesVolumeNeeded() | currency }}</h4>
+            <div class="form-group">
+              <label for="avgSalePrice">Your average sales price (past 12 months)</label>
+              <input ng-model="agentGoals.avgSalePrice" ui-money-mask="0" type="text" class="form-control" id="avgSalePrice" placeholder="Enter average price">
+            </div><!-- /.form-group -->
+            <h3>Transactions Needed:</h3>
+            <h4 ng-show="setTransactionsNeeded(12)">{{ setTransactionsNeeded(12) | number:1 }} per year</h4>
+            <h4 ng-show="setTransactionsNeeded(3)">{{ setTransactionsNeeded(3) | number:1 }} per quarter</h4>
+            <h4 ng-show="setTransactionsNeeded(1)">{{ setTransactionsNeeded(1) | number:1 }} per month</h4>
+            <div class="form-group">
+              <label for="touchesPerReferral">Your average database touches to generate one referral</label>
+              <input ng-model="agentGoals.touchesPerReferral" ui-number-mask="0" type="text" class="form-control" id="touchesPerReferral" placeholder="Enter number of touches">
+            </div><!-- /.form-group -->
+            <div class="form-group">
+              <label for="referralsPerClose">Your average referrals needed to generate one closed sale</label>
+              <input ng-model="agentGoals.referralsPerClose" ui-number-mask="0" type="text" class="form-control" id="referralsPerClose" placeholder="Enter number of referrals">
+            </div><!-- /.form-group -->
+            <h3>Touches needed:</h3>
+            <h4 ng-show="setTouchesPerClose()">{{ setTouchesPerClose() }} per closed transaction.</h4>
+            <h4 ng-show="setTouchesToReachGoal(12)">{{ setTouchesToReachGoal(12) | number:0 }} per month to reach your goal.</h4>
+            <h4 ng-show="setTouchesToReachGoal(52)">{{ setTouchesToReachGoal(52) | number:0 }} per week to reach your goal.</h4>
+            <div class="form-group">
+              <label for="daysMarketingPerWeek">How many days each week will you spend time doing marketing?</label>
+              <input ng-model="agentGoals.daysMarketingPerWeek" ui-number-mask="0" min="0" max="7" type="text" class="form-control" id="daysMarketingPerWeek" placeholder="Enter days">
+            </div><!-- /.form-group -->
+            <h3>Your marketing goal is {{ setMarketingWorkDayTouchesNeeded() | number:0 }} touches per day.</h3>
+          </form>
+        </div><!-- /.col-sm-6 -->
+        <div class="col-sm-6">
+          <div class="affix">
+            
+          </div><!-- /.affix -->
+        </div><!-- /.col-sm-6 -->
+      </div><!-- /.row -->
+      <div class="row">
+        <div class="col-sm-4">
+          <h1>Database Analysis</h1>
+          <div class="form-group">
+            <label for="peopleMultipleReferrals">How many people have given you multiple referrals in the past 2 years?</label>
+            <input ng-model="agentGoals.peopleMultipleReferrals" ui-number-mask="0" type="text" class="form-control" id="peopleMultipleReferrals" placeholder="Enter number of people">
+          </div><!-- /.form-group -->
+          <div class="form-group">
+            <label for="peopleOneReferral">How many people have given you just one referral in the past two years?</label>
+            <input ng-model="agentGoals.peopleOneReferral" ui-number-mask="0" type="text" class="form-control" id="peopleOneReferral" placeholder="Enter number of people">
+          </div><!-- /.form-group -->
+          <div class="form-group">
+            <label for="currentClients">How current clients do you have?</label>
+            <input ng-model="agentGoals.currentClients" ui-number-mask="0" type="text" class="form-control" id="currentClients" placeholder="Enter number of people">
+          </div><!-- /.form-group -->
+          <div class="form-group">
+            <label for="pastClients">How past clients do you have?</label>
+            <input ng-model="agentGoals.pastClients" ui-number-mask="0" type="text" class="form-control" id="pastClients" placeholder="Enter number of people">
+          </div><!-- /.form-group -->
+          <h3>Sphere of Influnce</h3>
+          <div class="form-group">
+            <label for="sphereFamily">Family:</label>
+            <input ng-model="agentGoals.sphereFamily" ui-number-mask="0" type="text" class="form-control" id="sphereFamily" placeholder="Enter number of family members">
+          </div><!-- /.form-group -->
+          <div class="form-group">
+            <label for="sphereFriends">Friends:</label>
+            <input ng-model="agentGoals.sphereFriends" ui-number-mask="0" type="text" class="form-control" id="sphereFriends" placeholder="Enter number of friends">
+          </div><!-- /.form-group -->
+          <div class="form-group">
+            <label for="sphereFormerCoworkers">Former Co-Workers (non-real estate):</label>
+            <input ng-model="agentGoals.sphereFormerCoworkers" ui-number-mask="0" type="text" class="form-control" id="sphereFormerCoworkers" placeholder="Enter goal">
+          </div><!-- /.form-group -->
+          <div class="form-group">
+            <label for="sphereGroupMembers">Through social groups and organizations (church, kids soccer, etc):</label>
+            <input ng-model="agentGoals.sphereGroupMembers" ui-number-mask="0" type="text" class="form-control" id="sphereGroupMembers" placeholder="Enter number of people">
+          </div><!-- /.form-group -->
+          <div class="form-group">
+            <label for="sphereB2BMembers">Through business networking groups (BNI, Chamber of Commerce, etc):</label>
+            <input ng-model="agentGoals.sphereB2BMembers" ui-number-mask="0" type="text" class="form-control" id="sphereB2BMembers" placeholder="Enter number of people">
+          </div><!-- /.form-group -->
+          <div class="form-group">
+            <label for="sphereOtherBusiness">Other local small business relationships and service providers:</label>
+            <input ng-model="agentGoals.sphereOtherBusiness" ui-number-mask="0" type="text" class="form-control" id="sphereOtherBusiness" placeholder="Enter number of people">
+          </div><!-- /.form-group -->
+          <div class="form-group">
+            <label for="mailingList">On your mailing list:</label>
+            <input ng-model="agentGoals.mailingList" ui-number-mask="0" type="text" class="form-control" id="mailingList" placeholder="Enter number of people">
+          </div><!-- /.form-group -->
+          <h4>Estimated Database Breakdown:</h4>
+          <p>Total number: <strong>{{ setDatabaseTotalSize() | number:0 }}</strong> </p>
+          <p>Total number: <strong>{{ setDatabaseTotalSize() | number:0 }}</strong> </p>
+        </div><!-- /.col-sm-4 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
     
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -83,6 +141,7 @@
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <!-- Angular.JS -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.18/angular.min.js"></script>
-    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="masks.min.js"></script>
+    <script type="text/javascript" src="goals.js"></script>
   </body>
 </html>
