@@ -56,14 +56,14 @@
             <h4 ng-show="setTransactionsNeeded(3)">{{ setTransactionsNeeded(3) | number:1 }} per quarter</h4>
             <h4 ng-show="setTransactionsNeeded(1)">{{ setTransactionsNeeded(1) | number:1 }} per month</h4>
             <div class="form-group">
-              <label for="touchesPerReferral">Your average database touches to generate one referral</label>
+              <label for="touchesPerReferral">Your average database personal touches to generate one referral</label>
               <input ng-model="agentGoals.touchesPerReferral" ui-number-mask="0" type="text" class="form-control" id="touchesPerReferral" placeholder="Enter number of touches">
             </div><!-- /.form-group -->
             <div class="form-group">
               <label for="referralsPerClose">Your average referrals needed to generate one closed sale</label>
               <input ng-model="agentGoals.referralsPerClose" ui-number-mask="0" type="text" class="form-control" id="referralsPerClose" placeholder="Enter number of referrals">
             </div><!-- /.form-group -->
-            <h3>Touches needed:</h3>
+            <h3>Personal touches needed:</h3>
             <h4 ng-show="setTouchesPerClose()">{{ setTouchesPerClose() }} per closed transaction.</h4>
             <h4 ng-show="setTouchesToReachGoal(12)">{{ setTouchesToReachGoal(12) | number:0 }} per month to reach your goal.</h4>
             <h4 ng-show="setTouchesToReachGoal(52)">{{ setTouchesToReachGoal(52) | number:0 }} per week to reach your goal.</h4>
@@ -71,7 +71,7 @@
               <label for="daysMarketingPerWeek">How many days each week will you spend time doing marketing?</label>
               <input ng-model="agentGoals.daysMarketingPerWeek" ui-number-mask="0" min="0" max="7" type="text" class="form-control" id="daysMarketingPerWeek" placeholder="Enter days">
             </div><!-- /.form-group -->
-            <h3>Your marketing goal is {{ setMarketingWorkDayTouchesNeeded() | number:0 }} touches per day.</h3>
+            <h3>Your marketing goal is {{ setMarketingWorkDayTouchesNeeded() | number:0 }} personal touches per day.</h3>
           </form>
         </div><!-- /.col-sm-6 -->
         <div class="col-sm-6">
@@ -85,28 +85,28 @@
           <h1>Database Analysis</h1>
           <div class="form-group">
             <label for="peopleMultipleReferrals">How many people have given you multiple referrals in the past 2 years?</label>
-            <input ng-model="agentGoals.peopleMultipleReferrals" ui-number-mask="0" type="text" class="form-control" id="peopleMultipleReferrals" placeholder="Enter number of people">
+            <input ng-model="agentGoals.peopleMultipleReferrals" type="text" class="form-control" id="peopleMultipleReferrals" placeholder="Enter number of people">
           </div><!-- /.form-group -->
           <div class="form-group">
             <label for="peopleOneReferral">How many people have given you just one referral in the past two years?</label>
-            <input ng-model="agentGoals.peopleOneReferral" ui-number-mask="0" type="text" class="form-control" id="peopleOneReferral" placeholder="Enter number of people">
+            <input ng-model="agentGoals.peopleOneReferral" type="text" class="form-control" id="peopleOneReferral" placeholder="Enter number of people">
           </div><!-- /.form-group -->
           <div class="form-group">
             <label for="currentClients">How current clients do you have?</label>
-            <input ng-model="agentGoals.currentClients" ui-number-mask="0" type="text" class="form-control" id="currentClients" placeholder="Enter number of people">
+            <input ng-model="agentGoals.currentClients" type="text" class="form-control" id="currentClients" placeholder="Enter number of people">
           </div><!-- /.form-group -->
           <div class="form-group">
             <label for="pastClients">How past clients do you have?</label>
-            <input ng-model="agentGoals.pastClients" ui-number-mask="0" type="text" class="form-control" id="pastClients" placeholder="Enter number of people">
+            <input ng-model="agentGoals.pastClients" type="text" class="form-control" id="pastClients" placeholder="Enter number of people">
           </div><!-- /.form-group -->
           <h3>Sphere of Influnce</h3>
           <div class="form-group">
             <label for="sphereFamily">Family:</label>
-            <input ng-model="agentGoals.sphereFamily" ui-number-mask="0" type="text" class="form-control" id="sphereFamily" placeholder="Enter number of family members">
+            <input ng-model="agentGoals.sphereFamily" type="text" class="form-control" id="sphereFamily" placeholder="Enter number of family members">
           </div><!-- /.form-group -->
           <div class="form-group">
             <label for="sphereFriends">Friends:</label>
-            <input ng-model="agentGoals.sphereFriends" ui-number-mask="0" type="text" class="form-control" id="sphereFriends" placeholder="Enter number of friends">
+            <input ng-model="agentGoals.sphereFriends" type="text" class="form-control" id="sphereFriends" placeholder="Enter number of friends">
           </div><!-- /.form-group -->
           <div class="form-group">
             <label for="sphereFormerCoworkers">Former Co-Workers (non-real estate):</label>
@@ -114,23 +114,37 @@
           </div><!-- /.form-group -->
           <div class="form-group">
             <label for="sphereGroupMembers">Through social groups and organizations (church, kids soccer, etc):</label>
-            <input ng-model="agentGoals.sphereGroupMembers" ui-number-mask="0" type="text" class="form-control" id="sphereGroupMembers" placeholder="Enter number of people">
+            <input ng-model="agentGoals.sphereGroupMembers" type="text" class="form-control" id="sphereGroupMembers" placeholder="Enter number of people">
           </div><!-- /.form-group -->
           <div class="form-group">
             <label for="sphereB2BMembers">Through business networking groups (BNI, Chamber of Commerce, etc):</label>
-            <input ng-model="agentGoals.sphereB2BMembers" ui-number-mask="0" type="text" class="form-control" id="sphereB2BMembers" placeholder="Enter number of people">
+            <input ng-model="agentGoals.sphereB2BMembers" type="text" class="form-control" id="sphereB2BMembers" placeholder="Enter number of people">
           </div><!-- /.form-group -->
           <div class="form-group">
             <label for="sphereOtherBusiness">Other local small business relationships and service providers:</label>
-            <input ng-model="agentGoals.sphereOtherBusiness" ui-number-mask="0" type="text" class="form-control" id="sphereOtherBusiness" placeholder="Enter number of people">
+            <input ng-model="agentGoals.sphereOtherBusiness" type="text" class="form-control" id="sphereOtherBusiness" placeholder="Enter number of people">
           </div><!-- /.form-group -->
           <div class="form-group">
             <label for="mailingList">On your mailing list:</label>
-            <input ng-model="agentGoals.mailingList" ui-number-mask="0" type="text" class="form-control" id="mailingList" placeholder="Enter number of people">
+            <input ng-model="agentGoals.mailingList" type="text" class="form-control" id="mailingList" placeholder="Enter number of people">
           </div><!-- /.form-group -->
           <h4>Estimated Database Breakdown:</h4>
           <p>Total number: <strong>{{ setDatabaseTotalSize() | number:0 }}</strong> </p>
-          <p>Total number: <strong>{{ setDatabaseTotalSize() | number:0 }}</strong> </p>
+          <p>A+: <strong>{{ setDatabaseAPlus() | number:0 }}</strong> </p>
+          <p>A: <strong>{{ setDatabaseA() | number:0 }}</strong> </p>
+          <p>B: <strong>{{ setDatabaseB() | number:0 }}</strong> </p>
+          <p>C: <strong>{{ setDatabaseC() | number:0 }}</strong> </p>
+          <p>Mailing List: <strong> {{ setAdjustedMailingListSize() | number:0 }} </strong> </p>
+          <p>Availble personal touches per year: <strong> {{ setAvailableTouchesPerYear() | number:0 }}</strong></p>
+          <p>Transaction capacity: <strong>{{ setDatabaseTransactionsCapacity() | number:1 }}</strong></p>
+          <p>Volume capacity: <strong>{{ setDatabaseVolumeCapacity() | currency }}</strong></p>
+          <p>Maximum takeaway: <strong>{{ setDatabaseMaximumTakeaway() | currency }}</strong></p>
+          <p>Database Capacity: <strong>{{ setDatabaseCapacity() | number:1 }}%</strong></p>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="{{ setDatabaseCapacity() }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ setDatabaseCapacity() }}%;">
+              <span class="sr-only">{{ setDatabaseCapacity() }}% Complete</span>
+            </div>
+          </div>
         </div><!-- /.col-sm-4 -->
       </div><!-- /.row -->
     </div><!-- /.container -->
